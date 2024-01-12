@@ -21,11 +21,11 @@ const { notify } = require('../core/core.utils');
 const { useAsync, utils, errorHandle, } = require('./../core');
 // const MindCastFavourite = require('../models/model.favourites')
 const { EmailNote } = require('../core/core.notify')
-const ModelAdmin = require('../models/model.user')
+const ModelUser = require('../models/model.user')
 
 
 
-exports.AdminRegister = useAsync(async (req, res) => {
+exports.UserRegister = useAsync(async (req, res) => {
 
     if (req.body.password) {
         req.body.password = await bcrypt.hash(req.body.password, 13)
@@ -37,14 +37,14 @@ exports.AdminRegister = useAsync(async (req, res) => {
         req.body.token = sha1(req.body.email + new Date())
         req.body.lastLogin = CryptoJS.AES.encrypt(JSON.stringify(new Date()), process.env.SECRET_KEY).toString()
 
-        const validates = await ModelAdmin.findOne({ email: req.body.email })
+        const validates = await ModelUser.findOne({ email: req.body.email })
         if (validates) {
-            return res.json(utils.JParser('There is another admin with this email', false, []));
+            return res.json(utils.JParser('There is another user with this email', false, []));
         } else {
 
-            let admin = await new ModelAdmin(req.body)
+            let user = await new ModelUser(req.body)
 
-            await admin.save().then(data => {
+            await user.save().then(data => {
 
                 data.password = "********************************"
 
@@ -57,37 +57,37 @@ exports.AdminRegister = useAsync(async (req, res) => {
     }
 })
 
-exports.AdminLogin = useAsync(async (req, res) => {
+exports.UesrLogin = useAsync(async (req, res) => {
     try {
         res.header("Access-Control-Allow-Origin", "*");
-        const admin = await ModelAdmin.findOne({ email: req.body.email })
-        let resultt;
-        let adminPassword;
+        const user = await ModelUser.findOne({ email: req.body.email })
+        let blocked;
+        let userPassword;
         let name;
         let body;
         let subject;
 
-        if (admin) {
-            email= admin.email;
-            resultt = admin.blocked;
-            adminPassword = admin.password;
-            name = admin.fullName;
+        if (user) {
+            email= user.email;
+            blocked = user.blocked;
+            userPassword = user.password;
+            name = user.fullName;
             body = "Login detected";
             subject = "Login Notification";
 
             //update user if regToken is passed
-            if (!!req.body.token) await admin.update({ token: req.body.token })
+            if (!!req.body.token) await user.update({ token: req.body.token })
 
         } else {
             return res.json(utils.JParser("Invalid email or password", false, []));
         }
         
-        if (resultt === true) {
+        if (blocked === true) {
             return res.json(utils.JParser('Sorry your account is blocked', false, []));
         }
 
-        if (adminPassword) {
-            const originalPassword = await bcrypt.compare(req.body.password, adminPassword);
+        if (userPassword) {
+            const originalPassword = await bcrypt.compare(req.body.password, userPassword);
 
             if (!originalPassword) {
                 return res.json(utils.JParser('Wrong password', false, []));
@@ -96,10 +96,10 @@ exports.AdminLogin = useAsync(async (req, res) => {
                 const token = sha1(req.body.email + new Date())
                 const lastLogin = CryptoJS.AES.encrypt(JSON.stringify(new Date()), process.env.SECRET_KEY).toString()
 
-                await ModelAdmin.updateOne({ _id: admin._id }, { $set: {token: token, lastLogin: lastLogin } }).then(() => {
+                await ModelUser.updateOne({ _id: user._id }, { $set: {token: token, lastLogin: lastLogin } }).then(() => {
                     EmailNote(email,name,body,subject)
-                    admin.token = token
-                    return res.json(utils.JParser('logged in successfuly', true,  admin ));
+                    user.token = token
+                    return res.json(utils.JParser('logged in successfuly', true,  user ));
                 })
             }
         }
