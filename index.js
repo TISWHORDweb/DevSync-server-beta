@@ -5,8 +5,7 @@ const cors = require('cors')
 const path = require('path');
 const bodyParser = require('body-parser')
 const Auth = require('./routes/route.auth')
-const Admin = require('./routes/route.admin')
-const Universal = require('./routes/route.universal')
+const User = require('./routes/route.user')
 
 const mongoose = require('mongoose');
 const { errorHandle } = require("./core");
@@ -41,8 +40,7 @@ app.use('/docs', express.static(path.join(__dirname, 'docs')));
 app.use(bodyParser.json())
 
 app.use("/api/v1/auth", Auth)
-app.use("/api/v1/admin", Admin)
-app.use("/api/v1", Universal)
+app.use("/api/v1/user", User)
 app.use('*', () => {
     throw new errorHandle("Resource not found", 404);
 })
