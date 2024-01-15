@@ -13,8 +13,8 @@ const { AdminRegister, AdminLogin, UserRegister, UesrLogin } = require('../contr
  */
 
 // ADMIN
-router.post('/admin/register', bodyParser, UserRegister);
-router.post('/admin/login', bodyParser, UesrLogin);
+router.post('/register', bodyParser, UserRegister);
+router.post('/login', bodyParser, UesrLogin);
 
 
 /**
