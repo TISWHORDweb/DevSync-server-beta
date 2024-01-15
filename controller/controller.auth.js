@@ -32,14 +32,18 @@ exports.UserRegister = useAsync(async (req, res) => {
     }
 
     try {
-        if (!req.body.email  || !req.body.password ) return res.json(utils.JParser('please check the fields', false, []));
+        if (!req.body.email  || !req.body.password || req.body.username || req.body.image ) return res.json(utils.JParser('please check the fields', false, []));
 
         req.body.token = sha1(req.body.email + new Date())
         req.body.lastLogin = CryptoJS.AES.encrypt(JSON.stringify(new Date()), process.env.SECRET_KEY).toString()
 
-        const validates = await ModelUser.findOne({ email: req.body.email })
-        if (validates) {
+        const emailValidates = await ModelUser.findOne({ email: req.body.email })
+        const usernameValidates = await ModelUser.findOne({ email: req.body.email })
+        if (emailValidates) {
             return res.json(utils.JParser('There is another user with this email', false, []));
+        }
+        if(usernameValidates){
+            return res.json(utils.JParser('There is another user with this username', false, []));
         } else {
 
             let user = await new ModelUser(req.body)
