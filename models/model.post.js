@@ -12,6 +12,7 @@ const postSchema=new mongoose.Schema({
     },
     like:{
         type:Number, 
+        default: 0
     },
     description:{
         type:String,
