@@ -43,7 +43,7 @@ exports.getUser = useAsync(async (req, res) => {
 
         const userID = req.userID
 
-        const user = await ModelUser.find({ _id: userID });
+        const user = await ModelUser.findOne({ _id: userID });
         return res.json(utils.JParser('User fetch successfully', !!user, user));
     } catch (e) {
         throw new errorHandle(e.message, 400)
