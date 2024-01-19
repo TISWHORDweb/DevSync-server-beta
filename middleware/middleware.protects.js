@@ -32,9 +32,10 @@ exports.userBodyGuard = useAsync(async (req, res, next) => {
 
         //****** Calculate an hour ago in milliseconds *******//
         const oneHour = 60 * 60 * 1000; /* ms */
+        const twoHour = oneHour + oneHour;
 
         //********** Throw error if token has expired (1hr) **************//
-        if (((new Date) - lastLogin) > oneHour){ res.status(401).json(utils.JParser("Invalid or expired token, Use a valid token and try again", false, []));} 
+        if (((new Date) - lastLogin) > twoHour){ res.status(401).json(utils.JParser("Invalid or expired token, Use a valid token and try again", false, []));} 
         
         req.userID = isValid._id
         req.type = isValid.userType

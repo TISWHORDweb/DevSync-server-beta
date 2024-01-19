@@ -3,6 +3,8 @@ dotenv.config()
 const { useAsync, utils, errorHandle, } = require('../core');
 const Joi = require("joi");
 const ModelPost = require("../models/model.post");
+const ModelUser = require("../models/model.user");
+const ModelCategory = require("../models/model.category");
 
 exports.post = useAsync(async (req, res) => {
 
@@ -77,7 +79,7 @@ exports.singleProduct = useAsync(async (req, res) => {
         const product = await ModelProduct.findOne({ productID: productID });
 
         if (!product) {
-            const product = await ModelProduct.findOne({ _id: productID})
+            const product = await ModelProduct.findOne({ _id: productID })
             return res.json(utils.JParser('Product fetch successfully', !!product, product));
         }
 
@@ -91,8 +93,19 @@ exports.singleProduct = useAsync(async (req, res) => {
 exports.allPost = useAsync(async (req, res) => {
 
     try {
-        const post = await ModelPost.find();
-        return res.json(utils.JParser('All Posts fetch successfully', !!post, post));
+
+        const posts = await ModelPost.find()
+            .populate({
+                path: "userID",
+                model: ModelUser,
+                select: "_id username image ",
+            }).populate({
+                path: "categoryID",
+                model: ModelCategory,
+                select: "_id name ",
+            });
+
+        return res.json(utils.JParser('All Posts fetch successfully', false, posts.reverse()));
     } catch (e) {
         throw new errorHandle(e.message, 400)
     }
