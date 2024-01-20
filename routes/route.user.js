@@ -24,7 +24,7 @@ router.get('/user/:id',userBodyGuard , singleUser);
 
 //POST
 router.post('/post/create',userBodyGuard , post);
-router.get('/post/all',userBodyGuard , allPost);
+router.get('/post/all', allPost);
 
 //CATEGORY
 router.post('/category/create',userBodyGuard , category);
