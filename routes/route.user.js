@@ -9,7 +9,7 @@ const { userBodyGuard } = require('../middleware/middleware.protects');
 const { post, allPost } = require('../controller/controller.post');
 const { category, allCategory } = require('../controller/controller.category');
 const { like, allLikes, Checklike } = require('../controller/controller.like');
-const { userSkill, getUserSkill, skill, allSkills } = require('../controller/controller.skill');
+const { userSkill, getUserSkill, skill, allSkills, deleteSkills, allUserSkills, singleSkill, singleUserSkill, editSkill, editUserSkill, deleteUserSkills } = require('../controller/controller.skill');
 
 /**
  * Export lastly
@@ -36,11 +36,20 @@ router.get('/like/post/:postID',userBodyGuard , like);
 router.get('/like/all',userBodyGuard , allLikes);
 router.get('/like/post/check/:postID',userBodyGuard , Checklike);
 
-//SKILL
+// USER SKILL
 router.post('/skill/user',userBodyGuard , userSkill);
 router.get('/skill/user/all',userBodyGuard , getUserSkill);
+router.get('/skill/users',userBodyGuard , allUserSkills);
+router.get('/skill/user/:id',userBodyGuard , singleUserSkill);
+router.delete('/skill/user/delete',userBodyGuard , deleteUserSkills);
+router.put('/skill/user/edit',userBodyGuard , editUserSkill);
+
+//SKILL
 router.post('/skill',userBodyGuard , skill);
 router.get('/skill/all',userBodyGuard , allSkills);
+router.get('/skill/:id',userBodyGuard , singleSkill);
+router.delete('/skill/delete',userBodyGuard , deleteSkills);
+router.put('/skill/edit',userBodyGuard , editSkill);
 
 router.all('/*', (req, res) => {
     throw new CoreError(`route not found ${req.originalUrl} using ${req.method} method`, 404);
