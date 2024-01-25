@@ -23,8 +23,8 @@ exports.skill = useAsync(async (req, res) => {
 
         const skill = req.body.skill
         const Check = await ModelSkill.findOne({ skill })
-        
-        if(Check)  return res.json(utils.JParser('Skill existed already', false, []));
+
+        if (Check) return res.json(utils.JParser('Skill existed already', false, []));
 
         const body = req.body
         const data = await ModelSkill.create(body)
@@ -96,10 +96,10 @@ exports.userSkill = useAsync(async (req, res) => {
         const userID = req.userID
         const body = req.body.body
         const skillID = req.body.skillID
-
-        const check = await ModelUserSkill.findOne({skillID,userID})
-        if(check) return res.json(utils.JParser(' This skill have been added before', false, []));
-
+        const check = await ModelUserSkill.findOne({ skillID: skillID, userID: userID })
+        if (check) {
+            return res.json(utils.JParser(' This skill have been added before', false, []));
+        }
         const skill = await ModelUserSkill.insertMany(
             body.map((data) => ({ ...data, userID: userID }))
         );

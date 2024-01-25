@@ -38,6 +38,18 @@ exports.post = useAsync(async (req, res) => {
 
 })
 
+exports.getUserPosts = useAsync(async (req, res) => {
+
+    try {
+
+        const userID = req.userID
+
+        const posts = await ModelPost.find({ userID });
+        return res.json(utils.JParser('User posts fetch successfully', !!posts, posts));
+    } catch (e) {
+        throw new errorHandle(e.message, 400)
+    }
+})
 
 exports.editProduct = useAsync(async (req, res) => {
 
