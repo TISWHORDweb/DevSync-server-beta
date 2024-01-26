@@ -30,7 +30,7 @@ router.get('/post/user', userBodyGuard, getUserPosts);
 
 //CATEGORY
 router.post('/category/create',userBodyGuard , category);
-router.get('/category/all',userBodyGuard , allCategory);
+router.get('/category/all' , allCategory);
 
 //LIKE
 router.get('/like/post/:postID',userBodyGuard , like);
