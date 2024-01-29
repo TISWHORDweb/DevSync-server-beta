@@ -103,6 +103,7 @@ exports.UesrLogin = useAsync(async (req, res) => {
                 await ModelUser.updateOne({ _id: user._id }, { $set: {token: token, lastLogin: lastLogin } }).then(() => {
                     EmailNote(email,name,body,subject)
                     user.token = token
+                    user.password = "****************************"
                     return res.json(utils.JParser('logged in successfuly', true,  user ));
                 })
             }

@@ -87,19 +87,15 @@ exports.getAdminProduct = useAsync(async (req, res) => {
     }
 })
 
-exports.singleProduct = useAsync(async (req, res) => {
+exports.singlePost = useAsync(async (req, res) => {
 
     try {
-        const productID = req.params.id
+        const postID = req.params.id
+        if (!postID) return res.status(402).json(utils.JParser('provide the post id', false, []));
 
-        const product = await ModelProduct.findOne({ productID: productID });
+        const post = await ModelPost.findOne({ _id: postID });
 
-        if (!product) {
-            const product = await ModelProduct.findOne({ _id: productID })
-            return res.json(utils.JParser('Product fetch successfully', !!product, product));
-        }
-
-        res.json(utils.JParser('Product fetch successfully', !!product, product));
+        res.json(utils.JParser('Post fetch successfully', !!post, post));
 
     } catch (e) {
         throw new errorHandle(e.message, 400)
