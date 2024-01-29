@@ -93,7 +93,15 @@ exports.singlePost = useAsync(async (req, res) => {
         const postID = req.params.id
         if (!postID) return res.status(402).json(utils.JParser('provide the post id', false, []));
 
-        const post = await ModelPost.findOne({ _id: postID });
+        const post = await ModelPost.findOne({ _id: postID }).populate({
+            path: "userID",
+            model: ModelUser,
+            select: "_id username image ",
+        }).populate({
+            path: "categoryID",
+            model: ModelCategory,
+            select: "_id name ",
+        });
 
         res.json(utils.JParser('Post fetch successfully', !!post, post));
 
