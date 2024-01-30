@@ -2,6 +2,7 @@ const dotenv = require("dotenv")
 dotenv.config()
 const { useAsync, utils, errorHandle, } = require('../core');
 const ModelComment = require("../models/model.comment");
+const ModelPost = require("../models/model.post");
 
 
 exports.allComents = useAsync(async (req, res) => {
@@ -20,11 +21,22 @@ exports.Comment = useAsync(async (req, res) => {
 
         const userID = req.userID
         req.body.userID = userID
+        const postID = req.body.postID
+
+        if (!postID) return res.status(402).json(utils.JParser('provide the post id', false, []));
+
         const body = req.body
+        const post = await ModelPost.findOne({ _id: postID })
+        const PostComment = post.comment
         const comment = await ModelComment.create(body)
 
-        return res.json(utils.JParser('Comment created successfully', !!comment, comment));
-
+        const data = { comment: +PostComment + +1 }
+        await ModelPost.updateOne({ _id: postID }, data).then(async () => {
+            const post = await ModelPost.findOne({ _id: postID });
+            console.log("in")
+            return res.json(utils.JParser('Commented successfully', !!post, {comment,post}));
+        })
+        
     } catch (e) {
         throw new errorHandle(e.message, 400)
     }
@@ -84,7 +96,7 @@ exports.PostComments = useAsync(async (req, res) => {
     try {
         const postID = req.params.id
 
-        const comment = await ModelComment.findOne({ postID });
+        const comment = await ModelComment.find({ postID });
         res.json(utils.JParser('Post comment fetch successfully', !!comment, comment));
 
     } catch (e) {
