@@ -10,6 +10,7 @@ const { post, allPost, getUserPosts, singlePost } = require('../controller/contr
 const { category, allCategory } = require('../controller/controller.category');
 const { like, allLikes, Checklike } = require('../controller/controller.like');
 const { userSkill, getUserSkill, skill, allSkills, deleteSkills, allUserSkills, singleSkill, singleUserSkill, editSkill, editUserSkill, deleteUserSkills } = require('../controller/controller.skill');
+const { Comment, allComents, deleteComment, singleComment, editComment, PostComments } = require('../controller/controller.comment');
 
 /**
  * Export lastly
@@ -52,6 +53,15 @@ router.get('/skill/all',userBodyGuard , allSkills);
 router.get('/skill/:id',userBodyGuard , singleSkill);
 router.delete('/skill/delete',userBodyGuard , deleteSkills);
 router.put('/skill/edit',userBodyGuard , editSkill);
+
+//COMMENTS
+router.post('/comment',userBodyGuard , Comment);
+router.get('/comment/all',userBodyGuard , allComents);
+router.get('/comment/:id',userBodyGuard , singleComment);
+router.get('/comment/post/:id' , PostComments);
+router.delete('/comment/delete',userBodyGuard , deleteComment);
+router.put('/comment/edit',userBodyGuard , editComment);
+
 
 router.all('/*', (req, res) => {
     throw new CoreError(`route not found ${req.originalUrl} using ${req.method} method`, 404);
