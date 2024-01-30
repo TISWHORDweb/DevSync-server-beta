@@ -41,7 +41,7 @@ app.use(bodyParser.json())
 
 app.use("/api/v1/auth", Auth)
 app.use("/api/v1/user", User)
-app.use('*', () => {
+app.use('/*', () => {
     throw new errorHandle("Resource not found", 404);
 })
 
