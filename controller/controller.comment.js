@@ -3,6 +3,7 @@ dotenv.config()
 const { useAsync, utils, errorHandle, } = require('../core');
 const ModelComment = require("../models/model.comment");
 const ModelPost = require("../models/model.post");
+const ModelUser = require("../models/model.user");
 
 
 exports.allComents = useAsync(async (req, res) => {
@@ -96,7 +97,11 @@ exports.PostComments = useAsync(async (req, res) => {
     try {
         const postID = req.params.id
 
-        const comment = await ModelComment.find({ postID });
+        const comment = await ModelComment.find({ postID }).populate({
+            path: "userID",
+            model: ModelUser,
+            select: "_id username image ",
+        })
         res.json(utils.JParser('Post comment fetch successfully', !!comment, comment));
 
     } catch (e) {
