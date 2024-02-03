@@ -3,6 +3,7 @@ dotenv.config()
 const { useAsync, utils, errorHandle, } = require('../core');
 const Joi = require("joi");
 const ModelCategory = require("../models/model.category");
+const ModelPost = require("../models/model.post");
 
 
 
@@ -39,6 +40,24 @@ exports.allCategory = useAsync(async (req, res) => {
     try {
         const category = await ModelCategory.find();
         return res.json(utils.JParser('All Categories fetch successfully', !!category, category));
+    } catch (e) {
+        throw new errorHandle(e.message, 400)
+    }
+})
+
+exports.CategoryPosts = useAsync(async (req, res) => {
+
+    try {
+        const categoryID = req.params.id
+
+        const category = await ModelPost.find({ categoryID });
+
+        if(!category){
+           return res.json(utils.JParser('No post for into this category', false, category));
+        }
+        
+        res.json(utils.JParser('Post comment fetch successfully', !!category, category));
+
     } catch (e) {
         throw new errorHandle(e.message, 400)
     }

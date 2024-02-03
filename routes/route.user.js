@@ -7,7 +7,7 @@ const CoreError = require('../core/core.error');
 const { usernameAvailabity, editUser, getUser, singleUser, allUsers, deleteUser } = require('../controller/controller.user');
 const { userBodyGuard } = require('../middleware/middleware.protects');
 const { post, allPost, getUserPosts, singlePost } = require('../controller/controller.post');
-const { category, allCategory } = require('../controller/controller.category');
+const { category, allCategory, CategoryPosts } = require('../controller/controller.category');
 const { like, allLikes, Checklike } = require('../controller/controller.like');
 const { userSkill, getUserSkill, skill, allSkills, deleteSkills, allUserSkills, singleSkill, singleUserSkill, editSkill, editUserSkill, deleteUserSkills } = require('../controller/controller.skill');
 const { Comment, allComents, deleteComment, singleComment, editComment, PostComments } = require('../controller/controller.comment');
@@ -33,6 +33,7 @@ router.get('/post/:id', singlePost);
 //CATEGORY
 router.post('/category/create',userBodyGuard , category);
 router.get('/category/all' , allCategory);
+router.get('/category/post/:id' , CategoryPosts);
 
 //LIKE
 router.get('/like/post/:postID',userBodyGuard , like);
