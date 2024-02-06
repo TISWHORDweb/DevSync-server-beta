@@ -50,13 +50,14 @@ exports.CategoryPosts = useAsync(async (req, res) => {
     try {
         const categoryID = req.params.id
 
-        const category = await ModelPost.find({ categoryID });
+        const post = await ModelPost.find({ categoryID });
+        const category = await ModelCategory.findOne({ _id:categoryID });
 
-        if(!category){
+        if(!post){
            return res.json(utils.JParser('No post for into this category', false, category));
         }
         
-        res.json(utils.JParser('Post comment fetch successfully', !!category, category));
+        res.json(utils.JParser('Post comment fetch successfully', !!category, {category,post}));
 
     } catch (e) {
         throw new errorHandle(e.message, 400)
