@@ -4,6 +4,7 @@ const { useAsync, utils, errorHandle, } = require('../core');
 const Joi = require("joi");
 const ModelCategory = require("../models/model.category");
 const ModelPost = require("../models/model.post");
+const ModelUser = require("../models/model.user");
 
 
 
@@ -50,7 +51,15 @@ exports.CategoryPosts = useAsync(async (req, res) => {
     try {
         const categoryID = req.params.id
 
-        const post = await ModelPost.find({ categoryID });
+        const post = await ModelPost.find({ categoryID }).populate({
+            path: "userID",
+            model: ModelUser,
+            select: "_id username image ",
+        }).populate({
+            path: "categoryID",
+            model: ModelCategory,
+            select: "_id name ",
+        });
         const category = await ModelCategory.findOne({ _id:categoryID });
 
         if(!post){
