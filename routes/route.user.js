@@ -31,7 +31,7 @@ router.get('/post/user', userBodyGuard, getUserPosts);
 router.get('/post/:id', singlePost);
 
 //CATEGORY
-router.post('/category/create',userBodyGuard , category);
+router.post('/category/create' , category);
 router.get('/category/all' , allCategory);
 router.get('/category/post/:id' , CategoryPosts);
 

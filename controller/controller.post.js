@@ -49,7 +49,7 @@ exports.getUserPosts = useAsync(async (req, res) => {
             model: ModelCategory,
             select: "_id name ",
         });
-        return res.json(utils.JParser('User posts fetch successfully', !!posts, posts));
+        return res.json(utils.JParser('User posts fetch successfully', !!posts, posts.reverse()));
     } catch (e) {
         throw new errorHandle(e.message, 400)
     }
