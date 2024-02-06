@@ -55,6 +55,23 @@ exports.getUserPosts = useAsync(async (req, res) => {
     }
 })
 
+exports.getUserPostsID = useAsync(async (req, res) => {
+
+    try {
+
+        const userID = req.params.id
+
+        const posts = await ModelPost.find({ userID }).populate({
+            path: "categoryID",
+            model: ModelCategory,
+            select: "_id name ",
+        });
+        return res.json(utils.JParser('User posts fetch successfully', !!posts, posts.reverse()));
+    } catch (e) {
+        throw new errorHandle(e.message, 400)
+    }
+})
+
 exports.editProduct = useAsync(async (req, res) => {
 
     try {

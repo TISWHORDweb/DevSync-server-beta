@@ -6,7 +6,7 @@ const router = express.Router();
 const CoreError = require('../core/core.error');
 const { usernameAvailabity, editUser, getUser, singleUser, allUsers, deleteUser } = require('../controller/controller.user');
 const { userBodyGuard } = require('../middleware/middleware.protects');
-const { post, allPost, getUserPosts, singlePost } = require('../controller/controller.post');
+const { post, allPost, getUserPosts, singlePost, getUserPostsID } = require('../controller/controller.post');
 const { category, allCategory, CategoryPosts } = require('../controller/controller.category');
 const { like, allLikes, Checklike } = require('../controller/controller.like');
 const { userSkill, getUserSkill, skill, allSkills, deleteSkills, allUserSkills, singleSkill, singleUserSkill, editSkill, editUserSkill, deleteUserSkills } = require('../controller/controller.skill');
@@ -22,12 +22,13 @@ router.put('/user/edit',userBodyGuard , editUser);
 router.get('/user',userBodyGuard , getUser);
 router.get('/user/all',userBodyGuard , allUsers);
 router.delete('/user/delete',userBodyGuard , deleteUser);
-router.get('/user/:id',userBodyGuard , singleUser);
+router.get('/user/:id' , singleUser);
 
 //POST
 router.post('/post/create',userBodyGuard , post);
 router.get('/post/all', allPost);
 router.get('/post/user', userBodyGuard, getUserPosts);
+router.get('/post/user/:id', getUserPostsID);
 router.get('/post/:id', singlePost);
 
 //CATEGORY
