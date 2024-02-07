@@ -158,7 +158,7 @@ exports.getUserSkill = useAsync(async (req, res) => {
 
     try {
 
-        const userID = req.userID
+        const userID = req.params.id
 
         const skill = await ModelUserSkill.find({ userID });
         return res.json(utils.JParser('User skill fetch successfully', !!skill, skill));

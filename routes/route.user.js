@@ -43,7 +43,7 @@ router.get('/like/post/check/:postID',userBodyGuard , Checklike);
 
 // USER SKILL
 router.post('/skill/user',userBodyGuard , userSkill);
-router.get('/skill/user/all',userBodyGuard , getUserSkill);
+router.get('/skill/user/:id' , getUserSkill);
 router.get('/skill/users',userBodyGuard , allUserSkills);
 router.get('/skill/user/:id',userBodyGuard , singleUserSkill);
 router.delete('/skill/user/delete',userBodyGuard , deleteUserSkills);
@@ -51,7 +51,7 @@ router.put('/skill/user/edit',userBodyGuard , editUserSkill);
 
 //SKILL
 router.post('/skill',userBodyGuard , skill);
-router.get('/skill/all',userBodyGuard , allSkills);
+router.get('/skill/all' , allSkills);
 router.get('/skill/:id',userBodyGuard , singleSkill);
 router.delete('/skill/delete',userBodyGuard , deleteSkills);
 router.put('/skill/edit',userBodyGuard , editSkill);
