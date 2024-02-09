@@ -23,19 +23,29 @@ exports.editUser = useAsync(async (req, res) => {
     try {
 
         const userID = req.body.id
-        const body = req.body
 
         if (!userID) return res.status(402).json(utils.JParser('provide the user id', false, []));
 
-        await ModelUser.updateOne({ _id: userID }, body).then(async () => {
-            const user = await ModelUser.find({ _id: userID });
-            return res.json(utils.JParser('User updated Successfully', !!user, user));
-        })
+        const user = await ModelUser.findOne({ _id: userID });
+
+        if (user) {
+            req.body.image = req.body.image === "" ? user.image : req.body.image;
+            req.body.coverImage = req.body.coverImage === "" ? user.coverImage : req.body.coverImage;
+        }
+        console.log(req.body)
+        const body = req.body
+
+        await ModelUser.updateOne({ _id: userID }, body);
+
+        const updatedUser = await ModelUser.findOne({ _id: userID });
+
+        return res.json(utils.JParser('User updated successfully', !!updatedUser, updatedUser));
 
     } catch (e) {
         throw new errorHandle(e.message, 400)
     }
 })
+
 
 exports.getUser = useAsync(async (req, res) => {
 
