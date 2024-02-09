@@ -18,7 +18,7 @@ const { Comment, allComents, deleteComment, singleComment, editComment, PostComm
 
 //USER
 router.get('/user/username/:id', usernameAvailabity);
-router.put('/user/edit' , editUser);
+router.put('/user/edit',userBodyGuard , editUser);
 router.get('/user',userBodyGuard , getUser);
 router.get('/user/all',userBodyGuard , allUsers);
 router.delete('/user/delete',userBodyGuard , deleteUser);

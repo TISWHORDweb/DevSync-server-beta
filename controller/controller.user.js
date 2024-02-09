@@ -22,7 +22,7 @@ exports.editUser = useAsync(async (req, res) => {
 
     try {
 
-        const userID = req.body.id
+        const userID = req.userID
 
         if (!userID) return res.status(402).json(utils.JParser('provide the user id', false, []));
 
