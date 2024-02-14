@@ -9,7 +9,7 @@ const { userBodyGuard } = require('../middleware/middleware.protects');
 const { post, allPost, getUserPosts, singlePost, getUserPostsID } = require('../controller/controller.post');
 const { category, allCategory, CategoryPosts } = require('../controller/controller.category');
 const { like, allLikes, Checklike } = require('../controller/controller.like');
-const { userSkill, getUserSkill, skill, allSkills, deleteSkills, allUserSkills, singleSkill, singleUserSkill, editSkill, editUserSkill, deleteUserSkills } = require('../controller/controller.skill');
+const { userSkill, getUserSkill, allUserSkills, singleUserSkill, editUserSkill, deleteUserSkills } = require('../controller/controller.skill');
 const { Comment, allComents, deleteComment, singleComment, editComment, PostComments } = require('../controller/controller.comment');
 
 /**
@@ -48,13 +48,6 @@ router.get('/skill/users',userBodyGuard , allUserSkills);
 router.get('/skill/user/:id',userBodyGuard , singleUserSkill);
 router.delete('/skill/user/delete',userBodyGuard , deleteUserSkills);
 router.put('/skill/user/edit',userBodyGuard , editUserSkill);
-
-//SKILL
-router.post('/skill',userBodyGuard , skill);
-router.get('/skill/all' , allSkills);
-router.get('/skill/:id',userBodyGuard , singleSkill);
-router.delete('/skill/delete',userBodyGuard , deleteSkills);
-router.put('/skill/edit',userBodyGuard , editSkill);
 
 //COMMENTS
 router.post('/comment',userBodyGuard , Comment);
