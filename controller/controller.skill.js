@@ -84,7 +84,7 @@ exports.getUserSkill = useAsync(async (req, res) => {
 
 exports.deleteUserSkills = useAsync(async (req, res) => {
     try {
-        const ID = req.body.id
+        const ID = req.params.id
         if (!ID) return res.status(402).json(utils.JParser('provide the user skill id', false, []));
 
         const skill = await ModelUserSkill.deleteOne({ _id: ID })
