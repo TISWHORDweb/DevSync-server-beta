@@ -46,7 +46,7 @@ router.post('/skill/user',userBodyGuard , userSkill);
 router.get('/skill/user/:id' , getUserSkill);
 router.get('/skill/users',userBodyGuard , allUserSkills);
 router.get('/skill/user/:id',userBodyGuard , singleUserSkill);
-router.delete('/skill/user/delete',userBodyGuard , deleteUserSkills);
+router.delete('/skill/user/delete' , deleteUserSkills);
 router.put('/skill/user/edit',userBodyGuard , editUserSkill);
 
 //COMMENTS
